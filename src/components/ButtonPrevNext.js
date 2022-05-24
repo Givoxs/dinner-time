@@ -1,12 +1,16 @@
 import React from "react";
 
-function Button({text}){
+function ButtonPrevNext({text}){
 
     return(
      <>
-     <button type = "button" className="buttonprevnext">{text}</button>
+     <button
+         type="button"
+         className="buttonprevnext">
+         {text}
+     </button>
      </>
     )
 }
 
-export default Button
+export default ButtonPrevNext
