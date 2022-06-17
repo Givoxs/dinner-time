@@ -3,78 +3,102 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 
-
-function Ingredients(){
-    const apiKey = "01b598e057b844afb0dcfe60776b9e98";
-    const [ingredientName, setIngredientName] = useState("");
+function Ingredients() {
     const [recipes, setRecipes] = useState(null);
-    // const [searchedIngredients, setSearchedIngredients] = useState("");
-    // const [recipeID, setRecipeID] = useState(0)
-    const{
-        register,
-            handleSubmit
-    } = useForm();
-    //gebruik geen useEffect omdat react hook form er pas een request wordt gedaan bij verzenden en niet bij typen van elke letter
-        async function fetchData(data) {
-            try {
-                const result = await axios.get(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${data.ingredientname}&number=9&apiKey=${apiKey}`);
-                setRecipes(result.data);
-                console.log(result.data);
+    const [show, setShow] = useState(false);
+    const [noResults, setNoResults] = useState(null);
+    const [ingredientDotCheck, toggleIngredientDotCheck] = useState("");
+    const [offset, setOffset] = useState(0);
+    const apiKey = "6b56f72d5d774a46a125d409be241027";
 
-            } catch (e) {
-                console.log(e);
-            }
+    const {
+        register,
+        handleSubmit
+    } = useForm();
+
+    async function fetchData(data) {
+        try {
+            const result = await axios.get(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${data.ingredientname}&number=9&offset=${offset}&apiKey=${apiKey}`);
+            setRecipes(result.data);
+            setNoResults(result.data.length);
+            toggleIngredientDotCheck(data.ingredientname);
+
+        } catch (e) {
+            console.log(e);
         }
+    }
+
     return (
         <>
             <div className="ingredient-background">
+
                 <section className="ingredient-explanation">
                     <h2>Here you can tell Cookme what ingredients you have available. </h2>
                     <p>Cookme will then tell you what recipes you can make with them. Try it!</p>
                 </section>
 
-                <section className="user-fill-ingredients">
-                    <h2>Write down below what you have</h2>
-                    <h3>After each ingredient type ",+" to make sure each ingredient is searched</h3>
+                <div className="user-fill-ingredients">
                     <form onSubmit={handleSubmit(fetchData)}>
-                        <label htmlFor="search-ingredients">
-                            <input
-                                type="text"
-                                placeholder="write ingredients.."
-                                // name="ingredient-name"
-                                id="search"
-                                {...register("ingredientname")}
-                                value={ingredientName}
-                                onChange={(e) => setIngredientName(e.target.value)}
-                            />
-                        </label>
-                        <button type="submit">test</button>
+                        <div className="search-ingredients">
+                            <label htmlFor="search-ingredients">
+                                <h2>Write down below what you have available at home.
+                                    Make sure to separate each ingredient with a ","</h2>
+                                <input
+                                    type="text"
+                                    placeholder="write ingredients.."
+                                    {...register("ingredientname")}
+                                />
+                            </label>
+                        </div>
 
+                        <div className="search-button-ingredients-box">
+
+                            {show && noResults !== 0 &&
+                            <button className="search-button-ingredients" type="submit" disabled={offset === -1}
+                                    onClick={() => setOffset(offset - 1)}>
+                                ⬅️
+                            </button>}
+                            {offset === -1 && setOffset(0)}
+
+                            <button className="search-button-ingredients" type="submit"
+                                    onClick={() => setShow(true)}>
+                                Show Results
+                            </button>
+
+                            {show && noResults !== 0 &&
+                            <button className="search-button-ingredients" type="submit"
+                                    onClick={() => setOffset(offset + 1)}>
+                                ➡️
+                            </button>}
+
+                        </div>
                     </form>
-                </section>
-                <div><section>
-                    <div className="send-button-ingredients-box">
-                        <button className="send-button-ingredients" type="button"
-                                onClick={() => setIngredientName(ingredientName)}>Show results
-                        </button>
-                    </div>
+                </div>
 
+                {show && noResults === 0 &&
+                <p className="error-message">One or more ingredients are not recognized. Please make changes to your
+                    quiry</p>}
+                {show && ingredientDotCheck.includes(".") &&
+                <p className="error-message">You accidentally used a ".". Replace it with a ",".</p>}
 
-                    {recipes && recipes.map((recipe) => {
-                        return (
+                <div className="show-results-box">
+                    <section className="show-results">
 
-                               <Link to={`/results/${recipe.id}`} key={recipe.id}><h1 className="test">{recipe.title}</h1>
-                                    <img src={recipe.image} alt={recipe.name}/>
-                        </Link>
-
-
-                        )})
-                    }
-                </section>
+                        {recipes && recipes.map((recipe) => {
+                            return (
+                                <div className="one-result" key={recipe.id}>
+                                    <Link to={`/results/${recipe.id}`}><h1
+                                        className="ingredient-result">{recipe.title}</h1>
+                                        <img className="image-result" src={recipe.image} alt={recipe.name}/>
+                                    </Link>
+                                </div>
+                            );
+                        })
+                        }
+                    </section>
                 </div>
             </div>
+        </>);
+}
 
-        </>)}
-
-
-    export default Ingredients;
+export default Ingredients;

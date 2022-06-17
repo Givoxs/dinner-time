@@ -1,37 +1,37 @@
 import React, {useState} from 'react';
 
-function Feedback() {
+function Footer() {
+
     const [thanks, setThanks] = useState(false);
+
     return (
         <>
-        <footer>
-            <div className="form-container">
-                <h2>Contactform</h2>
-                <form>
-                    <input
-                        type="text"
-                        placeholder="Emailaddress"
-                        name="email"
-                    />
-                    <input
-                        type="text"
-                        placeholder="What do you want to share?"
-                        name="message"
-                    />
-                </form>
+            <footer>
+                <div className="form-container">
+                    <h2>Contactform</h2>
 
-            <button className="feedback-button" type="button" onClick={() => setThanks(true)}>
-                Send Message
-            </button>
+                    <form>
+                        <input
+                            type="text"
+                            placeholder="Emailaddress"
+                            name="email"
+                        />
+                        <input
+                            type="text"
+                            placeholder="What do you want to share?"
+                            name="message"
+                        />
+                    </form>
+                    <button className="feedback-button" type="button" onClick={() => setThanks(true)}>
+                        Send Message
+                    </button>
 
-            {thanks === true && <p>Thanks for your feedback!</p>}
+                    {thanks === true && <p>Thanks for your feedback!</p>}
 
-
-        </div>
-        </footer>
-</>
-)
-    ;
+                </div>
+            </footer>
+        </>
+    );
 }
 
-export default Feedback;
+export default Footer;

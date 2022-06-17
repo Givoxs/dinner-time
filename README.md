@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+#Inleiding:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Als oplossing voor het eeuwenoude probleem dat men niet weet wat te bereiden is deze applicatie ontwikkelt.
+Deze applicatie maakt het mogelijk om op drie verschillende wijze gerechten te genereren door of:
 
-## Available Scripts
+-vragen te beantwoorden waarna gerechten worden gesuggereert.
 
-In the project directory, you can run:
+-beschikbare ingredienten in te voeren waarna gerechten worden gesuggereert.
 
-### `npm start`
+-zelf een gerechtnaam in te voeren waarna gerechten worden gesuggereert.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+![img.png](img.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Het project is opgezet met [Create React App](https://github.com/facebook/create-react-app).
 
+#Benodigdheden:
+
+API key: Er is een API key nodig om informatie op te halen. Deze key is reeds ingevuld. Hier hoeft dus verder geen aandacht aan besteed te worden.
+
+Backend deel 1: Deze applicatie maakt gebruik van de [Novi backend](https://github.com/hogeschoolnovi/novi-educational-backend-documentation/blob/main/README.md#9-errors) ten behoeve van het aanmaken van accounts en het inloggen op het eigen account.
+
+Belangrijke informatie: De backend draait op een Heroku server. Deze server wordt automatisch inactief wanneer er een tijdje geen requests gemaakt worden. De eerste request die de server weer uit de 'slaapstand' haalt zal daarom maximaal 30 seconden op zich kunnen laten wachten. Daarna zal de responsetijd normaal zijn. Voer daarom altijd eerst een test-request uit voor je een account probeert aan te maken.
+
+Stappenplan om de server uit de slaapstand te halen:
+
+Deze test kun je uitvoeren op de volgende [pagina](http://localhost:3000/register) of via de link http://localhost:3000/register. De knop om de server uit de slaapstand te halen vind je onderaan de pagina. 
+
+Open eerst de console. Druk daarna op "test server". Zodra je de response ziet in de console dat de API bereikbaar is, kan indien gewenst een account worden aangemaakt. Daarna kun je inloggen op je eigen profiel met je "username" en "password".
+
+Backend deel 2: De informatie met betrekking tot gerechten wordt opgehaald van de Spoontacular API https://spoonacular.com/food-api/docs
+
+#De applicatie starten
+Als je het project gecloned hebt naar jouw locale machine, installeer je eerst de node_modules door het volgende commando in de terminal te runnen:
+
+npm install
+
+Wanneer dit klaar is, kun je de applicatie starten met behulp van:
+
+###`npm start`
+
+of gebruik de WebStorm knop (npm start). Open http://localhost:3000 om de pagina in de browser te bekijken. 
+Bij elke wijziging zal de pagina opnieuw laden.
+
+#Extra functionaliteiten:
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Start de test runner in interactieve modus. Kijk naar het volgende stuk over [tests](https://facebook.github.io/create-react-app/docs/running-tests) voor meer informatie.
 
 ### `npm run build`
+Maakt de app klaar voor productie en zet dit in de `build` folder. Het bundelt React in productiemodus en optimaliseert het voor de beste prestatie.
+Bekijk het volgende stuk over [deployment](https://facebook.github.io/create-react-app/docs/deployment) voor meer informatie.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Leer meer
+Je kunt meer leren via [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Om React te leren kijk je naar [React documentation](https://reactjs.org/).

@@ -1,138 +1,94 @@
 import React, {createContext, useEffect, useState} from "react";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 
-//1maak context aan
 export const AuthContext = createContext({});
 
-// 2maak een eigen context-provider component
-//zodat we hier allerlei functies, state en andere dingen kunnen bijhouden
 function AuthContextProvider({children}) {
-    const [auth, setAuth] = useState({
+    const [isAuth, toggleIsAuth] = useState({
         isAuth: false,
         user: null,
-        status: 'pending',
+        status: "pending",
     });
+    const navigate = useNavigate();
 
     useEffect(() => {
-        //we zijn opnieuw opgestart
-        //hebben we een token in de local storage? en is deze nog geldig?
-
-        //zo ja, haal info op en plaats in de state.
-        //zo nee, doe niets, laat originele state staan
         const token = localStorage.getItem("token");
 
-        // is de token nog geldig? decodeerd te token en check de exp key en verglijk dit met new Date()
-        // const decodedToken = jwtDecode("token")
-        //schrijf functie die linux timestamp omzet naar javascript timestamp om te kijken of deze nog geldig is
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         if (token) {
-            const decodedToken = jwt_decode(token);
-            // Is de token nog geldig? Decodeer de token en check de exp key en vergelijk dit met new Date();
-            //dan halen we data op
-            async function fetchUserData() {
-                try {
-                    const response = await axios.get(`https://frontend-educational-backend.herokuapp.com/api/user/${decodedToken.sub}`,
-                        {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        }
-                    }
-                    );
-                    console.log(response)
+            const decode = jwt_decode(token);
 
-                    // zet de gegevens van de gebruiker in de state!
-                    setAuth({
-                        ...auth,
-                        isAuth: true,
-                        user: {
-                            email: response.data.email,
-                            username: response.data.username,
-                            id: response.data.id,
-                        },
-                        status: 'done',
-                    });
-                } catch (e) {
-                    console.error(e);
-                    if (e.response.status === 500) {
-                        console.log('De server deed het niet');
-                    } else if (e.response.status === 404) {
-                        console.log('De developer heeft iets doms gedaan in het request');
-                    } else if (e.response.status === 401) {
-                        console.log('geen idee wat er fout gaat');
-                    } else {
-                        console.log('Het ging mis. Geen idee wat.');
-
-                    }
-                    setAuth({
-                        ...auth,
-                        status: 'done',
-                    });
-                }
-            }
-
-            fetchUserData();
+            getUserData(token);
         } else {
-            // Geen token? We behouden de initiele state, maar zetten de status op 'done'
-            setAuth({
-                ...auth,
-                status: 'done',
+            toggleIsAuth({
+                isAuth: false,
+                user: null,
+                status: "done",
             });
-        }
+        } // eslint-disable-next-line
     }, []);
 
+    function login(JWT) {
+        localStorage.setItem("token", JWT);
+        const decode = jwt_decode(JWT);
 
-    const history = useHistory();
+        getUserData(JWT);
+    }
 
-    function login(jwtToken) {
-        //1 zet token in local storage
-        localStorage.setItem('token', jwtToken);
-
-// 2. We willen weten wat er allemaal te vinden is in deze token, dus we decoden hem:
-        const decodedToken = jwt_decode(jwtToken);
-        console.log(decodedToken);
-        //sub = id
-        // als het nodig is haal de juiste gebruikersinfo op met decodedToken.sub (id)
-
-        //3zet userinfo in de contextstate
-
-        setAuth({
-            ...auth,
-            isAuth: true,
-            user: {
-                email: decodedToken.email,
-            },
-            status: "done",
-        });
-
-        history.push("/profile");
+    async function getUserData(token) {
+        try {
+            const result = await axios.get(
+                `https://frontend-educational-backend.herokuapp.com/api/user`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log(result.data);
+            toggleIsAuth({
+                ...isAuth,
+                isAuth: true,
+                user: {
+                    username: result.data.username,
+                    email: result.data.email,
+                    id: result.data.id,
+                },
+                status: "done",
+            });
+            navigate("/profile");
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     function logout() {
-        localStorage.clear(); //kijk of dit werkt
-        setAuth({
-            ...auth,
+        localStorage.clear();
+        toggleIsAuth({
+            ...isAuth,
             isAuth: false,
+            user: null,
+            status: "done",
         });
-        history.push("/");
+        navigate("/");
     }
 
-    const contextData = {
-        isAuth: auth.isAuth,
+    const data = {
+        isAuth: isAuth.isAuth,
+        user: isAuth.user,
         login: login,
         logout: logout,
     };
 
-// 3 render daarin het ECTHTE usercontext.provider
     return (
-        <AuthContext.Provider value={contextData}>
-            {auth.status === 'done' ? children : <p>Loading...</p>}
-        </AuthContext.Provider>
-
+        <div>
+            <AuthContext.Provider value={data}>
+                {isAuth.status === "done" ? children : <p>Loading...</p>}
+            </AuthContext.Provider>
+        </div>
     );
 }
-
 
 export default AuthContextProvider;

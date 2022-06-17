@@ -1,12 +1,14 @@
 import React from "react";
 
+function MainProcessButton({textbutton}) {
 
-function MainProcessButton({textbutton}, {classname}){
-
-    <button type="button" className={classname}>
-        text="{textbutton}"
-    </button>
-
+    return (
+        <>
+            <button type="button" className="buttons-homepage">
+                {textbutton}
+            </button>
+        </>
+    );
 }
 
-export default MainProcessButton
+export default MainProcessButton;
