@@ -13,6 +13,8 @@ Deze applicatie maakt het mogelijk om op drie verschillende wijze gerechten te g
 
 Het project is opgezet met [Create React App](https://github.com/facebook/create-react-app).
 
+De link naar de github repository betreft: https://github/Givoxs/dinner-time.
+
 #Benodigdheden:
 
 API key: Er is een API key nodig om informatie op te halen. Deze key is reeds ingevuld. Hier hoeft dus verder geen aandacht aan besteed te worden.
@@ -53,3 +55,7 @@ Bekijk het volgende stuk over [deployment](https://facebook.github.io/create-rea
 Je kunt meer leren via [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 Om React te leren kijk je naar [React documentation](https://reactjs.org/).
+
+
+
+
